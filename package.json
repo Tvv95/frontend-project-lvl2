@@ -2,6 +2,7 @@
   "name": "difference-calculator",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "files": [
     "dist"
   ],
@@ -42,6 +43,7 @@
     "eslint-plugin-import": "^2.19.1"
   },
   "dependencies": {
-    "commander": "^4.1.0"
+    "commander": "^4.1.0",
+    "lodash": "^4.17.15"
   }
 }
