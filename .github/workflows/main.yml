@@ -30,10 +30,15 @@ jobs:
       - name: Run linter
         run: |
           make lint
+      - name: Prepare for test
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          GIT_BRANCH=$GITHUB_REF GIT_COMMIT_SHA=$GITHUB_SHA ./cc-test-reporter before-build
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v2.4.0
         env:
-          CC_TEST_REPORTER_ID: <2a1d856bf7b9f31bc1e6ce78f9422aa0b9456e46f3f1ff068e7a697c867173c0>
+          CC_TEST_REPORTER_ID: 2a1d856bf7b9f31bc1e6ce78f9422aa0b9456e46f3f1ff068e7a697c867173c0
         with:
           coverageCommand: make test-coverage
           debug: true
