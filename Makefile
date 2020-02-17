@@ -9,8 +9,10 @@ publish:
 lint:
 	npx eslint .
 run:
-	npx babel-node src/bin/gendiff.js '__tests__/__fixtures__/fixture_before.json' '__tests__/__fixtures__/fixture_after.json'
+	gendiff '__tests__/__fixtures__/fixture_before.json' '__tests__/__fixtures__/fixture_after.json'
+build:
+	npm run build
 test:
-	npx jest
+	npm test
 test-coverage:
-	npx jest --coverage
+	npm test -- --coverage
