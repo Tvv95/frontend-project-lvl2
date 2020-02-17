@@ -12,3 +12,5 @@ run:
 	npx babel-node src/bin/gendiff.js '__tests__/__fixtures__/fixture_before.json' '__tests__/__fixtures__/fixture_after.json'
 test:
 	npx jest
+test-coverage:
+	npx jest --coverage
