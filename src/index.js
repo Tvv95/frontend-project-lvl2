@@ -1,9 +1,8 @@
-import fs from 'fs';
 import _ from 'lodash';
+import parse from './parsers';
 
 const genDiff = (pathToFile1, pathToFile2) => {
-  const objBefore = JSON.parse(fs.readFileSync(pathToFile1));
-  const objAfter = JSON.parse(fs.readFileSync(pathToFile2));
+  const [objBefore, objAfter] = parse(pathToFile1, pathToFile2);
 
   const reducer = (acc, current) => {
     if (_.has(objAfter, current)) {
