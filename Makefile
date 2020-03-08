@@ -20,3 +20,7 @@ run-yaml:
 	gendiff '__tests__/__fixtures__/fixture_before.yml' '__tests__/__fixtures__/fixture_after.yml'
 run-ini:
 	gendiff '__tests__/__fixtures__/fixture_before.ini' '__tests__/__fixtures__/fixture_after.ini'
+run-json-plain:
+	gendiff --format plain '__tests__/__fixtures__/fixture_before.json' '__tests__/__fixtures__/fixture_after.json'
+run-json-return:
+	gendiff --format json '__tests__/__fixtures__/fixture_before.yml' '__tests__/__fixtures__/fixture_after.yml'

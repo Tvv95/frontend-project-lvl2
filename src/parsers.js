@@ -3,7 +3,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-export default (pathToFile1, pathToFile2) => {
+const parse = (pathToFile1, pathToFile2) => {
   const format = path.extname(pathToFile1);
   const objResult = [];
 
@@ -25,3 +25,5 @@ export default (pathToFile1, pathToFile2) => {
   }
   return objResult;
 };
+
+export default parse;

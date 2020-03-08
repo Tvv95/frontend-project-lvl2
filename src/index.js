@@ -1,30 +1,18 @@
-import _ from 'lodash';
 import parse from './parsers';
+import buildAst from './buildAst';
+import mainFormatFunc from './formatters/main-format';
+import plainFormatFunc from './formatters/plain-format';
+import jsonFormatFunc from './formatters/json-format';
 
-const genDiff = (pathToFile1, pathToFile2) => {
+const genDiff = (pathToFile1, pathToFile2, format = 'main') => {
   const [objBefore, objAfter] = parse(pathToFile1, pathToFile2);
-
-  const reducer = (acc, current) => {
-    if (_.has(objAfter, current)) {
-      if (objBefore[current] === objAfter[current]) {
-        acc[current] = objBefore[current];
-      } else {
-        acc[`- ${current}`] = objBefore[current];
-        acc[`+ ${current}`] = objAfter[current];
-      }
-    } else {
-      acc[`- ${current}`] = objBefore[current];
-    }
-    return acc;
+  const ast = buildAst(objBefore, objAfter);
+  const render = {
+    main: mainFormatFunc,
+    plain: plainFormatFunc,
+    json: jsonFormatFunc,
   };
-
-  const result = Object.keys(objBefore).reduce(reducer, {});
-  Object.keys(objAfter).filter((filtCurrent) => !(_.has(objBefore, filtCurrent)))
-    .reduce((acc, current) => {
-      acc[`+ ${current}`] = objAfter[current];
-      return acc;
-    }, result);
-  return JSON.stringify(result, null, 2);
+  return render[format](ast);
 };
 
 export default genDiff;

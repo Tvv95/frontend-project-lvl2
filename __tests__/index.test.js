@@ -17,3 +17,13 @@ test('test_ini', () => {
   const genDiffFile = genDiff(`${root}/__fixtures__/fixture_before.ini`, `${root}/__fixtures__/fixture_after.ini`);
   expect(genDiffFile).toEqual(fs.readFileSync(`${root}/__fixtures__/fixture_result.txt`, 'utf8'));
 });
+
+test('test_plain_json', () => {
+  const genDiffFile = genDiff(`${root}/__fixtures__/fixture_before.json`, `${root}/__fixtures__/fixture_after.json`, 'plain');
+  expect(genDiffFile).toEqual(fs.readFileSync(`${root}/__fixtures__/fixture_plain_result.txt`, 'utf8'));
+});
+
+test('test_return_json', () => {
+  const genDiffFile = genDiff(`${root}/__fixtures__/fixture_before.yml`, `${root}/__fixtures__/fixture_after.yml`, 'json');
+  expect(genDiffFile).toEqual(fs.readFileSync(`${root}/__fixtures__/fixture_json_result.json`, 'utf8'));
+});
