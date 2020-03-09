@@ -1,5 +1,4 @@
 node_modules
 dist
-.github
 yarn.lock
 coverage
