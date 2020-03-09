@@ -1,26 +1,34 @@
-const plainFormatFunc = (ast) => {
-  const quotesCheck = (value) => {
-    if (typeof value === 'string') {
-      return `'${value}'`;
-    }
-    return value;
-  };
+const quotesCheck = (value) => {
+  if (typeof value === 'string') {
+    return `'${value}'`;
+  }
+  return value;
+};
 
+const plainFormatFunc = (ast) => {
   const reducer = (acc, currentChild) => {
-    if (currentChild.type === 'unchanged') {
-      acc += `Property '${currentChild.key}' was unchanged\n`;
-    } else if (currentChild.type === 'added') {
-      acc += `Property '${currentChild.key}' was added with value: ${quotesCheck(currentChild.value)}\n`;
-    } else if (currentChild.type === 'deleted') {
-      acc += `Property '${currentChild.key}' was deleted\n`;
-    } else if (currentChild.type === 'changed') {
-      acc += `Property '${currentChild.key}' was changed from ${quotesCheck(currentChild.changedValues[0])} to ${quotesCheck(currentChild.changedValues[1])}\n`;
-    } else if (currentChild.type === 'hasChild') {
-      currentChild.children.map((current) => {
-        current.key = `${currentChild.key}.${current.key}`;
-        return current;
-      });
-      acc += currentChild.children.reduce(reducer, '');
+    switch (currentChild.type) {
+      case 'unchanged':
+        acc += `Property '${currentChild.key}' was unchanged\n`;
+        break;
+      case 'added':
+        acc += `Property '${currentChild.key}' was added with value: ${quotesCheck(currentChild.value)}\n`;
+        break;
+      case 'deleted':
+        acc += `Property '${currentChild.key}' was deleted\n`;
+        break;
+      case 'changed':
+        acc += `Property '${currentChild.key}' was changed from ${quotesCheck(currentChild.changedValues[0])} to ${quotesCheck(currentChild.changedValues[1])}\n`;
+        break;
+      case 'hasChild':
+        currentChild.children.map((current) => {
+          current.key = `${currentChild.key}.${current.key}`;
+          return current;
+        });
+        acc += currentChild.children.reduce(reducer, '');
+        break;
+      default:
+        break;
     }
     return acc;
   };

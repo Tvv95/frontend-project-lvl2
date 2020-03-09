@@ -4,26 +4,15 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 
 const parse = (pathToFile1, pathToFile2) => {
+  const objBefore = fs.readFileSync(pathToFile1).toString();
+  const objAfter = fs.readFileSync(pathToFile2).toString();
   const format = path.extname(pathToFile1);
-  const objResult = [];
-
-  switch (format) {
-    case '.json':
-      objResult.push(JSON.parse(fs.readFileSync(pathToFile1)));
-      objResult.push(JSON.parse(fs.readFileSync(pathToFile2)));
-      break;
-    case '.yml':
-      objResult.push(yaml.safeLoad(fs.readFileSync(pathToFile1)));
-      objResult.push(yaml.safeLoad(fs.readFileSync(pathToFile2)));
-      break;
-    case '.ini':
-      objResult.push(ini.parse(fs.readFileSync(pathToFile1).toString()));
-      objResult.push(ini.parse(fs.readFileSync(pathToFile2).toString()));
-      break;
-    default:
-      break;
-  }
-  return objResult;
+  const formatList = {
+    '.json': JSON.parse,
+    '.yml': yaml.safeLoad,
+    '.ini': ini.parse,
+  };
+  return [formatList[format](objBefore), formatList[format](objAfter)];
 };
 
 export default parse;
