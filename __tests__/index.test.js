@@ -1,29 +1,23 @@
 import fs from 'fs';
+import path from 'path';
 import genDiff from '../src';
 
 const root = __dirname;
-const pathBefore = (format) => `${root}/__fixtures__/fixture_before.${format}`;
-const pathAfter = (format) => `${root}/__fixtures__/fixture_after.${format}`;
-const mainResult = fs.readFileSync(`${root}/__fixtures__/fixture_result.txt`, 'utf8');
-const plainResult = fs.readFileSync(`${root}/__fixtures__/fixture_plain_result.txt`, 'utf8');
-const jsonResult = fs.readFileSync(`${root}/__fixtures__/fixture_json_result.json`, 'utf8');
+const getFixturePath = (name) => path.join(root, '__fixtures__', name);
 
-test('test_json', () => {
-  expect(genDiff(pathBefore('json'), pathAfter('json'))).toEqual(mainResult);
-});
+const formats = [
+  ['json', 'json', 'result.txt'],
+  ['yml', 'yml', 'result.txt'],
+  ['ini', 'ini', 'result.txt'],
+  ['json', 'json', 'plain_result.txt', 'plain'],
+  ['yml', 'yml', 'json_result.json', 'json'],
+];
 
-test('test_yaml', () => {
-  expect(genDiff(pathBefore('yml'), pathAfter('yml'))).toEqual(mainResult);
-});
-
-test('test_ini', () => {
-  expect(genDiff(pathBefore('ini'), pathAfter('ini'))).toEqual(mainResult);
-});
-
-test('test_plain_json', () => {
-  expect(genDiff(pathBefore('json'), pathAfter('json'), 'plain')).toEqual(plainResult);
-});
-
-test('test_return_json', () => {
-  expect(genDiff(pathBefore('yml'), pathAfter('yml'), 'json')).toEqual(jsonResult);
+test.each(formats)('%s - %s => %s', (beforeFormat, afterFormat, expectedFormat, formatResult = 'main') => {
+  const pathBefore = getFixturePath(`fixture_before.${beforeFormat}`);
+  const pathAfter = getFixturePath(`fixture_after.${afterFormat}`);
+  const pathResult = getFixturePath(`fixture_${expectedFormat}`);
+  const actual = genDiff(pathBefore, pathAfter, formatResult);
+  const expected = fs.readFileSync(pathResult, 'utf-8');
+  expect(actual).toEqual(expected);
 });

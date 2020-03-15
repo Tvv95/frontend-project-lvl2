@@ -23,8 +23,9 @@ const mainFormatFunc = (ast) => {
     return acc;
   };
   const preRender = ast.reduce(reducer, {});
-  const preRenderv2 = JSON.stringify(preRender, null, 2);
-  return preRenderv2.replace(/[",]/gi, '');
+  const preRenderv2 = JSON.stringify(preRender, null, 4);
+  const result = preRenderv2.replace(/[",]/gi, '').replace(/\s{2}([+-])/gi, '$1');
+  return result;
 };
 
 export default mainFormatFunc;
