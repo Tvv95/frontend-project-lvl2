@@ -3,16 +3,22 @@ import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-const parse = (pathToFile1, pathToFile2) => {
-  const objBefore = fs.readFileSync(pathToFile1).toString();
-  const objAfter = fs.readFileSync(pathToFile2).toString();
-  const format = path.extname(pathToFile1);
+const readFile = (pathToFile) => {
+  const resultFile = fs.readFileSync(pathToFile).toString();
+  return resultFile;
+};
+
+const checkFormat = (pathToFile) => path.extname(pathToFile);
+
+const parse = (pathToFile) => {
+  const file = readFile(pathToFile);
+  const format = checkFormat(pathToFile);
   const formatList = {
     '.json': JSON.parse,
     '.yml': yaml.safeLoad,
     '.ini': ini.parse,
   };
-  return [formatList[format](objBefore), formatList[format](objAfter)];
+  return formatList[format](file);
 };
 
 export default parse;

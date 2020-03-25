@@ -5,7 +5,7 @@ const quotesCheck = (value) => {
   return value;
 };
 
-const plainFormatFunc = (ast) => {
+const plainFormat = (ast) => {
   const reducer = (acc, currentChild) => {
     switch (currentChild.type) {
       case 'unchanged':
@@ -18,7 +18,7 @@ const plainFormatFunc = (ast) => {
         acc.push(`Property '${currentChild.key}' was deleted\n`);
         break;
       case 'changed':
-        acc.push(`Property '${currentChild.key}' was changed from ${quotesCheck(currentChild.changedValues[0])} to ${quotesCheck(currentChild.changedValues[1])}\n`);
+        acc.push(`Property '${currentChild.key}' was changed from ${quotesCheck(currentChild.changedValueBefore)} to ${quotesCheck(currentChild.changedValueAfter)}\n`);
         break;
       case 'hasChild':
         currentChild.children.map((current) => {
@@ -37,4 +37,4 @@ const plainFormatFunc = (ast) => {
   return plainPreResult.join('').replace(/,/gi, '').replace(/object Object/gi, 'complex value').slice(0, -1);
 };
 
-export default plainFormatFunc;
+export default plainFormat;

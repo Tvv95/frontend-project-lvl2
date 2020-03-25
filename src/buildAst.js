@@ -20,7 +20,10 @@ const propertyActions = [
   {
     type: 'changed',
     check: (firstObj, secondObj, key) => firstObj[key] !== secondObj[key],
-    process: (firstValue, secondValue) => ({ changedValues: [firstValue, secondValue] }),
+    process: (firstValue, secondValue) => ({
+      changedValueBefore: firstValue,
+      changedValueAfter: secondValue,
+    }),
   },
   {
     type: 'unchanged',
