@@ -1,40 +1,36 @@
-const quotesCheck = (value) => {
+import _ from 'lodash';
+
+const convertValue = (value) => {
   if (typeof value === 'string') {
     return `'${value}'`;
+  }
+  if (_.isObject(value) === true) {
+    return '[complex value]';
   }
   return value;
 };
 
-const plainFormat = (ast) => {
-  const reducer = (acc, currentChild) => {
-    switch (currentChild.type) {
-      case 'unchanged':
-        acc.push(`Property '${currentChild.key}' was unchanged\n`);
-        break;
-      case 'added':
-        acc.push(`Property '${currentChild.key}' was added with value: ${quotesCheck(currentChild.value)}\n`);
-        break;
-      case 'deleted':
-        acc.push(`Property '${currentChild.key}' was deleted\n`);
-        break;
-      case 'changed':
-        acc.push(`Property '${currentChild.key}' was changed from ${quotesCheck(currentChild.changedValueBefore)} to ${quotesCheck(currentChild.changedValueAfter)}\n`);
-        break;
-      case 'hasChild':
-        currentChild.children.map((current) => {
-          const newCurrent = Object.assign(current);
-          newCurrent.key = `${currentChild.key}.${current.key}`;
-          return newCurrent;
-        });
-        acc.push(currentChild.children.reduce(reducer, []));
-        break;
-      default:
-        break;
-    }
-    return acc;
-  };
-  const plainPreResult = ast.reduce(reducer, []);
-  return plainPreResult.join('').replace(/,/gi, '').replace(/object Object/gi, 'complex value').slice(0, -1);
+const renderCase = (currentChild, keyName = '') => {
+  const newKey = (keyName === '' ? currentChild.key : `${keyName}.${currentChild.key}`);
+
+  switch (currentChild.type) {
+    case 'unchanged':
+      return `Property '${newKey}' was unchanged\n`;
+    case 'added':
+      return `Property '${newKey}' was added with value: ${convertValue(currentChild.value)}\n`;
+    case 'deleted':
+      return `Property '${newKey}' was deleted\n`;
+    case 'changed':
+      return `Property '${newKey}' was changed from ${convertValue(currentChild.changedValueBefore)} to ${convertValue(currentChild.changedValueAfter)}\n`;
+    case 'hasChild':
+      return currentChild.children.map((current) => renderCase(current, newKey));
+    default:
+      throw new Error(`Unknown current.type: '${currentChild.type}'!`);
+  }
+};
+const getPlainFormat = (ast) => {
+  const preRender = _.flattenDeep(ast.map((current) => renderCase(current)));
+  return preRender.join('').slice(0, -1);
 };
 
-export default plainFormat;
+export default getPlainFormat;

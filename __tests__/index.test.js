@@ -13,7 +13,7 @@ const formats = [
   ['yml', 'yml', 'json_result.json', 'json'],
 ];
 
-test.each(formats)('%s - %s => %s', (beforeFormat, afterFormat, expectedFormat, formatResult = 'main') => {
+test.each(formats)('%s - %s => %s', (beforeFormat, afterFormat, expectedFormat, formatResult = 'txtFull') => {
   const pathBefore = getFixturePath(`fixture_before.${beforeFormat}`);
   const pathAfter = getFixturePath(`fixture_after.${afterFormat}`);
   const pathResult = getFixturePath(`fixture_${expectedFormat}`);

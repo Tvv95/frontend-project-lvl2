@@ -1,10 +1,11 @@
 import _ from 'lodash';
 
 const stringify = (value, space) => {
-  if (_.isObject(value)) {
-    return ['{\n', Object.keys(value).map((key) => `${' '.repeat(space + 6)}${key}: ${value[key]}`), `\n${' '.repeat(space + 2)}}`].join('');
+  if (!_.isObject(value)) {
+    return value;
   }
-  return value;
+  return ['{\n', Object.keys(value).map((key) => `${' '.repeat(space + 6)}${key}: ${value[key]}`),
+    `\n${' '.repeat(space + 2)}}`].join('');
 };
 
 const renderCase = (current, space, render) => {
@@ -21,13 +22,13 @@ const renderCase = (current, space, render) => {
     case 'hasChild':
       return `${' '.repeat(space)}  ${current.key}: ${render(current.children, space + 4)}`;
     default:
-      return null;
+      throw new Error(`Unknown current.type: '${current.type}'!`);
   }
 };
 
-const txtFullFormat = (ast, space = 2) => {
-  const preRender = _.flatten(ast.map((current) => renderCase(current, space, txtFullFormat)));
+const getTxtFullFormat = (ast, space = 2) => {
+  const preRender = _.flatten(ast.map((current) => renderCase(current, space, getTxtFullFormat)));
   return ['{', ...preRender, `${' '.repeat(space - 2)}}`].join('\n');
 };
 
-export default txtFullFormat;
+export default getTxtFullFormat;

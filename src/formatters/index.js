@@ -1,11 +1,11 @@
-import txtFullFormat from './txtFull-format';
-import plainFormat from './plain-format';
+import getTxtFullFormat from './txtFull-format';
+import getPlainFormat from './plain-format';
 import jsonFormat from './json-format';
 
 const render = (format) => {
   const renderFormatters = {
-    main: txtFullFormat,
-    plain: plainFormat,
+    txtFull: getTxtFullFormat,
+    plain: getPlainFormat,
     json: jsonFormat,
   };
   return renderFormatters[format];
