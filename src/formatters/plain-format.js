@@ -4,7 +4,7 @@ const convertValue = (value) => {
   if (typeof value === 'string') {
     return `'${value}'`;
   }
-  if (_.isObject(value) === true) {
+  if (_.isObject(value)) {
     return '[complex value]';
   }
   return value;
@@ -15,14 +15,14 @@ const renderCase = (currentChild, keyName = '') => {
 
   switch (currentChild.type) {
     case 'unchanged':
-      return `Property '${newKey}' was unchanged\n`;
+      return `Property '${newKey}' was unchanged`;
     case 'added':
-      return `Property '${newKey}' was added with value: ${convertValue(currentChild.value)}\n`;
+      return `Property '${newKey}' was added with value: ${convertValue(currentChild.value)}`;
     case 'deleted':
-      return `Property '${newKey}' was deleted\n`;
+      return `Property '${newKey}' was deleted`;
     case 'changed':
-      return `Property '${newKey}' was changed from ${convertValue(currentChild.changedValueBefore)} to ${convertValue(currentChild.changedValueAfter)}\n`;
-    case 'hasChild':
+      return `Property '${newKey}' was changed from ${convertValue(currentChild.valueBefore)} to ${convertValue(currentChild.valueAfter)}`;
+    case 'nested':
       return currentChild.children.map((current) => renderCase(current, newKey));
     default:
       throw new Error(`Unknown current.type: '${currentChild.type}'!`);
@@ -30,7 +30,7 @@ const renderCase = (currentChild, keyName = '') => {
 };
 const getPlainFormat = (ast) => {
   const preRender = _.flattenDeep(ast.map((current) => renderCase(current)));
-  return preRender.join('').slice(0, -1);
+  return preRender.join('\n');
 };
 
 export default getPlainFormat;

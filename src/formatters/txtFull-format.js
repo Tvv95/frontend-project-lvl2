@@ -17,9 +17,9 @@ const renderCase = (current, space, render) => {
     case 'deleted':
       return `${' '.repeat(space)}- ${current.key}: ${stringify(current.value, space)}`;
     case 'changed':
-      return [`${' '.repeat(space)}- ${current.key}: ${stringify(current.changedValueBefore, space)}`,
-        `${' '.repeat(space)}+ ${current.key}: ${stringify(current.changedValueAfter, space)}`];
-    case 'hasChild':
+      return [`${' '.repeat(space)}- ${current.key}: ${stringify(current.valueBefore, space)}`,
+        `${' '.repeat(space)}+ ${current.key}: ${stringify(current.valueAfter, space)}`];
+    case 'nested':
       return `${' '.repeat(space)}  ${current.key}: ${render(current.children, space + 4)}`;
     default:
       throw new Error(`Unknown current.type: '${current.type}'!`);

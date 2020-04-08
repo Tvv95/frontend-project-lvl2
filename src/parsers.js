@@ -1,13 +1,13 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-const parse = (file, format) => {
+const parse = (content, format) => {
   const formatList = {
-    '.json': JSON.parse,
-    '.yml': yaml.safeLoad,
-    '.ini': ini.parse,
+    json: JSON.parse,
+    yml: yaml.safeLoad,
+    ini: ini.parse,
   };
-  return formatList[format](file);
+  return formatList[format](content);
 };
 
 export default parse;

@@ -5,11 +5,11 @@ import buildAst from './buildAst';
 import render from './formatters';
 
 const readFile = (pathToFile) => {
-  const resultFile = fs.readFileSync(pathToFile).toString();
-  return resultFile;
+  const resultContent = fs.readFileSync(pathToFile).toString();
+  return resultContent;
 };
 
-const checkFormat = (pathToFile) => path.extname(pathToFile);
+const checkFormat = (pathToFile) => path.extname(pathToFile).slice(1);
 
 const genDiff = (pathToFile1, pathToFile2, format = 'txtFull') => {
   const objBefore = parse(readFile(pathToFile1), checkFormat(pathToFile1));

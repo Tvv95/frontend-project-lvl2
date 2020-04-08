@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const propertyActions = [
   {
-    type: 'hasChild',
+    type: 'nested',
     check: (firstObj, secondObj, key) => _.isObject(firstObj[key])
       && _.isObject(secondObj[key]),
     process: (firstValue, secondValue, func) => ({ children: func(firstValue, secondValue) }),
@@ -21,8 +21,8 @@ const propertyActions = [
     type: 'changed',
     check: (firstObj, secondObj, key) => firstObj[key] !== secondObj[key],
     process: (firstValue, secondValue) => ({
-      changedValueBefore: firstValue,
-      changedValueAfter: secondValue,
+      valueBefore: firstValue,
+      valueAfter: secondValue,
     }),
   },
   {
