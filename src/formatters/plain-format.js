@@ -10,7 +10,7 @@ const convertValue = (value) => {
   return value;
 };
 
-const renderCase = (currentChildren, keyName = '') => currentChildren.map((currentChild) => {
+const renderCase = (ast, keyName = '') => ast.map((currentChild) => {
   const newKey = (keyName === '' ? currentChild.key : `${keyName}.${currentChild.key}`);
   switch (currentChild.type) {
     case 'unchanged':
