@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const getSpaceNumber = (treeDepth) => (treeDepth - 1) * 4 + 2;
+const getIndent = (treeDepth) => (treeDepth - 1) * 4 + 2;
 
 const stringify = (value, spaceNumber) => {
   if (!_.isObject(value)) {
@@ -11,7 +11,7 @@ const stringify = (value, spaceNumber) => {
 };
 
 const renderCase = (current, treeDepth, render) => {
-  const spaceNumber = getSpaceNumber(treeDepth);
+  const spaceNumber = getIndent(treeDepth);
   switch (current.type) {
     case 'unchanged':
       return `${' '.repeat(spaceNumber)}  ${current.key}: ${stringify(current.value, spaceNumber)}`;
@@ -32,7 +32,7 @@ const renderCase = (current, treeDepth, render) => {
 const getTxtFullFormat = (ast, treeDepth = 1) => {
   const preRender = _.flatten(ast
     .map((current) => renderCase(current, treeDepth, getTxtFullFormat)));
-  return ['{', ...preRender, `${' '.repeat(getSpaceNumber(treeDepth) - 2)}}`].join('\n');
+  return ['{', ...preRender, `${' '.repeat(getIndent(treeDepth) - 2)}}`].join('\n');
 };
 
 export default getTxtFullFormat;
